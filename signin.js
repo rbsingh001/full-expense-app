@@ -14,6 +14,10 @@ function userlogin() {
         .then(res => {
             if (res.data.message === 'Login successful') {
                 console.log('Login Successful');
+                const user = res.data.user;
+                console.log(user)
+                const id  = user.id;
+                window.location.href = `file:///C:/Users/dell/Desktop/Exp/exp.html?id=${id}`;
                 document.getElementById('email').value = "";
                 document.getElementById('password').value = "";
             }

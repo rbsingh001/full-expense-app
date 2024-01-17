@@ -16,7 +16,9 @@ function usersignup(){
       .then(res => {
         console.log("Sign Up Successful")
 
-        console.log(res);
+        console.log(res.data);
+
+        window.location.href = 'file:///C:/Users/dell/Desktop/Exp/signin.html'
 
         document.getElementById('name').value = "";
         document.getElementById('email').value = "";

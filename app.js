@@ -3,7 +3,10 @@ const express = require('express');
 
 const sequelize = require('./utils/database');
 const User = require('./model/user');
+const Exp = require('./model/exp');
 const bcrypt = require('bcrypt');
+
+Exp.belongsTo(User);
 
 var cors = require('cors');
 
@@ -61,13 +64,14 @@ app.post('/user/login', async (req, res) => {
         else {
             bcrypt.compare(password, existingUser.password, (err, result) => {
                 if (err) {
-                    return res.status(401).json({ message: 'Error Occured' });
+                    res.status(401).json({ message: 'Error Occured' });
                 }
                 if (result === true) {
-                    return res.status(200).json({ message: 'Login successful' });
+                    res.status(200).json({ message: 'Login successful', user: existingUser });
+
                 }
-                else{
-                    return res.status(200).json({ message: 'password not matched' });
+                else {
+                    res.status(200).json({ message: 'password not matched' });
                 }
             })
         }
@@ -78,6 +82,46 @@ app.post('/user/login', async (req, res) => {
         res.status(500).json({ message: 'Internal server error' });
     }
 });
+
+app.post('/exp/:userId', async (req, res) => {
+    try {
+        // console.log(req.body , id);
+
+        const userId = req.params.userId
+        const amount = req.body.amount;
+        const description = req.body.description;
+        const category = req.body.category;
+
+        const exp = await Exp.create({
+            amount: amount,
+            description: description,
+            category: category,
+            userId: userId
+        })
+        res.send(exp);
+    }
+    catch (err) {
+        console.log(err);
+    }
+})
+
+app.get('/exp/:userId', async (req, res) => {
+    try {
+
+        const id = req.params.userId;
+        const exps = await Exp.findAll({
+            where: {
+                userId: id
+            }
+        })
+        // console.log(exps);
+        res.send(exps);
+    }
+    catch (err) {
+        confirm.log(err);
+    }
+})
+
 
 
 sequelize
