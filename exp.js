@@ -115,11 +115,13 @@ window.addEventListener("DOMContentLoaded", () => {
 })
 
 function deleteExp(x) {
-    axios.delete(`http://localhost:5000/exp/${x}`)
+    const exp_id = x;
+    axios.delete(`http://localhost:5000/exp/${exp_id}`)
         .then((response) => {
+            console.log(response.data);
             if (response.status === 204) {
-                var liToRemove = document.getElementById(`${x}`);
-
+                var liToRemove = document.getElementById(exp_id);
+                console.log(liToRemove);
                 if (liToRemove) {
                     liToRemove.remove();
 

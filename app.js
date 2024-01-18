@@ -122,6 +122,19 @@ app.get('/exp/:userId', async (req, res) => {
     }
 })
 
+app.delete('/exp/:exp_id', async (req, res) => {
+    try {
+        const exp_id = req.params.exp_id;
+        const del_exp = await Exp.destroy({
+            where: { id: exp_id }
+        })
+        console.log(del_exp)
+        res.status(204).json({id: exp_id});
+    }
+    catch (err) {
+        console.log(err);
+    }
+})
 
 
 sequelize
