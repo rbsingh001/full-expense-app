@@ -17,6 +17,9 @@
             width: 80%;
             margin-top: 50px;
         }
+        .hidden{
+            display: none;
+        }
 
         form {
             background-color: #fff;
@@ -90,13 +93,23 @@
                 <button type="button" class="btn btn-primary" id="btn" onclick="myfunction()">Submit</button>
             </div>
         </form>
-        <button id="rzp-btn">Buy Premium</button>
+        <span id="premium"></span>
+            <button id="rzp-btn">Buy Premium</button>
+        
+        
     </div>
     <ul class="container" id="ul"></ul>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
     <script src="exp.js"></script>
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
     
+
+    <div>
+        <ul id="lb">
+            
+        </ul>
+    </div>
+
 </body>
 
 </html>

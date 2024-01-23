@@ -17,6 +17,7 @@ function userlogin() {
 
                 const token = res.data.token;
                 localStorage.setItem('token',token);
+                console.log(res.data)
                 window.location.href = `file:///C:/Users/dell/Desktop/Exp/exp.html`;
                 document.getElementById('email').value = "";
                 document.getElementById('password').value = "";

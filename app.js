@@ -26,7 +26,29 @@ app.use(bodyParser.json())
 app.use('/', signupRoute);
 app.use('/', loginRoute)
 app.use('/', authMiddleware, expRoutes)
-app.use('/purchase', authMiddleware , purchaseRoutes);
+app.use('/purchase', authMiddleware, purchaseRoutes);
+
+app.get('/premium/leaderboard', authMiddleware, async (req, res) => {
+    const exps = await Exp.findAll();
+    const users = await User.findAll();
+    const userAggExps = {}
+
+    exps.forEach((exp) => {
+        if (userAggExps[exp.userId]) {
+            userAggExps[exp.userId] = userAggExps[exp.userId] + exp.amount;
+
+        } else {
+            userAggExps[exp.userId] = exp.amount;
+        }
+    })
+    var userLeaderboard = [];
+    users.forEach((user) => {
+        userLeaderboard.push({ name: user.name, total_cost: userAggExps[user.id] || 0 })
+    })
+    userLeaderboard.sort((a, b) => b.total_cost - a.total_cost);
+
+    res.send(userLeaderboard);
+})
 
 sequelize
     // .sync({force: true})
