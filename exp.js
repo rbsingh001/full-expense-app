@@ -177,16 +177,26 @@ function showLeaderboard(){
     const token = localStorage.getItem('token');
     axios.get('http://localhost:5000/premium/leaderboard', { headers: { "Authorization": token } })
         .then((response) => {
-            console.log(response.data)
-            let lb = document.getElementById('lb');
-            lb.innerText="";
 
+            let leader_span = document.getElementById('lb');
+            leader_span.innerText="";
+            var h1Element = document.createElement('h1');
+            h1Element.innerText="Leader-Board"
+            leader_span.appendChild(h1Element)
+
+            let u_list = document.getElementById('leaderboard');
+            u_list.innerText="";
+            
+            console.log(response.data)
             for (let i = 0; i < response.data.length; i++) {
-                let li = document.createElement('li');
                 let name = response.data[i].name;
-                let amount = response.data[i].total_cost;
-                li.innerText = `Name : ${name}  Total Expence: ${amount}`
-                lb.appendChild(li); 
+                let amount = response.data[i].totalExp;
+
+                console.log(name, amount);
+                let li = document.createElement('li');
+                li.innerText = `Name : ${name}  Total Expence: ${amount}`;
+                console.log(li)
+                u_list.appendChild(li); 
             }
         })
         .catch((error) => {

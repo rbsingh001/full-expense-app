@@ -7,6 +7,7 @@ const signupRoute = require('./routes/signup');
 const loginRoute = require('./routes/login');
 const expRoutes = require('./routes/exp');
 const purchaseRoutes = require('./routes/purchase');
+const leaderboardRoute = require('./routes/leaderboard');
 
 const User = require('./model/user');
 const Exp = require('./model/exp');
@@ -28,27 +29,7 @@ app.use('/', loginRoute)
 app.use('/', authMiddleware, expRoutes)
 app.use('/purchase', authMiddleware, purchaseRoutes);
 
-app.get('/premium/leaderboard', authMiddleware, async (req, res) => {
-    const exps = await Exp.findAll();
-    const users = await User.findAll();
-    const userAggExps = {}
-
-    exps.forEach((exp) => {
-        if (userAggExps[exp.userId]) {
-            userAggExps[exp.userId] = userAggExps[exp.userId] + exp.amount;
-
-        } else {
-            userAggExps[exp.userId] = exp.amount;
-        }
-    })
-    var userLeaderboard = [];
-    users.forEach((user) => {
-        userLeaderboard.push({ name: user.name, total_cost: userAggExps[user.id] || 0 })
-    })
-    userLeaderboard.sort((a, b) => b.total_cost - a.total_cost);
-
-    res.send(userLeaderboard);
-})
+app.use('/', authMiddleware, leaderboardRoute );
 
 sequelize
     // .sync({force: true})
